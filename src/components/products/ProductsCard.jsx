@@ -1,12 +1,10 @@
 import React from "react";
 
 const ProductsCard = ({ categoryProduct }) => {
-  console.log(categoryProduct);
-
   return (
     <div>
       <div className="card card-border bg-base-100 w-80">
-        <div className="card-body">
+        <div className="">
           <div className="flex items-center gap-3">
             <span className="text-xl bg-gray-200 p-2 rounded-xl">
               {categoryProduct.categoryIcon}
@@ -19,17 +17,30 @@ const ProductsCard = ({ categoryProduct }) => {
           <div className="mt-5 flex justify-between items-center">
             <div className="">
               <p>আজকের দাম</p>
-              <p>
-                <span className="text-2xl font-semibold">
+              <div className="flex items-center gap-2">
+                <h2 className="text-2xl font-semibold">
                   {categoryProduct.today}
-                </span>{" "}
-                টাকা
-              </p>
+                </h2>
+                <span>টাকা</span>
+              </div>
             </div>
-            <div className={`${categoryProduct.change.dir == 'up' ? 'text-green-700' : 'text-rose-700'}  bg-gray-200 px-3 py-1 rounded-xl  space-x-2`}>
-              <span>{categoryProduct.change.dir == "up" ? "▲" : "▼"}</span>
-              <span>{categoryProduct.change.pct}%</span>
-            </div>
+
+            {categoryProduct.change.dir == "up" && (
+              <div className="badge badge-soft badge-error">
+                ▲ {Math.abs(categoryProduct.change.pct)}%
+              </div>
+            )}
+            {categoryProduct.change.dir == "down" && (
+              <div className="badge badge-soft badge-success">
+                ▼ {Math.abs(categoryProduct.change.pct)}%
+              </div>
+            )}
+
+            {categoryProduct.change.dir == "flat" && (
+              <div className="badge badge-soft ">
+                {Math.abs(categoryProduct.change.pct)}%
+              </div>
+            )}
           </div>
         </div>
       </div>

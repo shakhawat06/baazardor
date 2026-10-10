@@ -3,15 +3,29 @@ import { useState } from "react";
 import { Link, Button } from "@heroui/react";
 import Image from "next/image";
 import Navbar from "./Navbar";
+import { useSession, signOut } from "@/lib/auth-client";
+import { IoIosArrowDown } from "react-icons/io";
+import { useRouter } from "next/navigation";
 
-const Header = ({categories}) => {
-    // console.log(categories);
-    
-   
+const Header = ({ categories }) => {
+  // console.log(categories);
+  const router = useRouter();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const date = new Date().toLocaleDateString("bn-BD", { dateStyle: "full" });
+
+  const { data: session } = useSession();
+
+  const handleSignOut = async () => {
+    await signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push("sign-in"); // redirect to login page
+        },
+      },
+    });
+  };
 
   return (
     <div>
@@ -64,61 +78,116 @@ const Header = ({categories}) => {
               </div>
             </Link>
           </div>
-          <ul className="hidden items-center gap-4 md:flex">
-            <li>
-              <Link href="#">Features</Link>
-            </li>
-            <li>
-              <Link
-                href="#"
-                className="font-medium text-accent"
-                aria-current="page"
-              >
-                Dashboard
-              </Link>
-            </li>
-            <li>
-              <Link href="#">Pricing</Link>
-            </li>
-          </ul>
+
           <div className="hidden items-center gap-4 md:flex">
-            <Link href="/sign-in">সাইন ইন</Link>
-            <Link href="/sign-up">
-              <Button className="bg-[#0D8840] shadow-md shadow-[#0D8840]">
-                সাইন আপ
-              </Button>
-            </Link>
+            {session?.user ? (
+              <>
+                <div className="dropdown dropdown-bottom dropdown-center">
+                  <div tabIndex={0} role="button" className="">
+                    <div className="flex items-center gap-3 cursor-pointer border px-2 py-1 border-gray-300 rounded-md">
+                      <div className="bg-[#0D8840] px-3 py-1 text-white rounded">
+                        {session?.user.name.slice(0, 1).toUpperCase()}
+                      </div>
+                      <div className="flex items-center gap-3">
+                        {session?.user.name}
+                        <IoIosArrowDown className="text-gray-500" />
+                      </div>
+                    </div>
+                  </div>
+                  <ul
+                    tabIndex={-1}
+                    className="dropdown-content menu bg-base-100 rounded-2xl z-1 w-70 p-2 shadow-sm"
+                  >
+                    <div className="px-2 py-3">
+                      <p className="text-xl">{session?.user.name}</p>
+                      <p className="text-xs text-neutral-500">
+                        {session?.user.email}
+                      </p>
+                    </div>
+                    <li>
+                      <Link href="/profile">👤 আমার প্রোফাইল</Link>
+                    </li>
+                    <li>
+                      <span
+                        onClick={handleSignOut}
+                        className="text-rose-600 hover:bg-transparent"
+                      >
+                        ↩ সাইন আউট
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+              </>
+            ) : (
+              <>
+                <Link href="/sign-in">সাইন ইন</Link>
+                <Link href="/sign-up">
+                  <Button className="bg-[#0D8840] shadow-md shadow-[#0D8840]">
+                    সাইন আপ
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
         </header>
         {isMenuOpen && (
           <div className="border-t border-separator md:hidden">
             <ul className="flex flex-col gap-2 p-4">
-              <li>
-                <Link href="#" className="block py-2">
-                  Features
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="block py-2 font-medium text-accent">
-                  Dashboard
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="block py-2">
-                  Pricing
-                </Link>
-              </li>
-              <li className="mt-4 flex flex-col gap-2 border-t border-separator pt-4">
-                <Link href="#" className="block py-2">
-                  Login
-                </Link>
-                <Button className="w-full">Sign Up</Button>
+              <li className="mt-4 flex flex-col gap-2">
+                {session?.user ? (
+                  <>
+                    <div className="dropdown dropdown-bottom dropdown-center">
+                      <div tabIndex={0} role="button" className="">
+                        <div className="flex items-center gap-3 w-50 cursor-pointer border px-2 py-1 border-gray-300 rounded-md">
+                          <div className="bg-[#0D8840] px-3 py-1 text-white rounded">
+                            {session?.user.name.slice(0, 1).toUpperCase()}
+                          </div>
+                          <div className="flex items-center gap-3">
+                            {session?.user.name}
+                            <IoIosArrowDown className="text-gray-500" />
+                          </div>
+                        </div>
+                      </div>
+                      <ul
+                        tabIndex={-1}
+                        className="dropdown-content menu bg-base-100 rounded-2xl z-1 w-70 p-2 shadow-sm"
+                      >
+                        <div className="px-2 py-3">
+                          <p className="text-xl">{session?.user.name}</p>
+                          <p className="text-xs text-neutral-500">
+                            {session?.user.email}
+                          </p>
+                        </div>
+                        <li>
+                          <Link href="/profile">👤 আমার প্রোফাইল</Link>
+                        </li>
+                        <li>
+                          <span
+                            onClick={handleSignOut}
+                            className="text-rose-600 hover:bg-transparent"
+                          >
+                            ↩ সাইন আউট
+                          </span>
+                        </li>
+                      </ul>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <Link href="/sign-in">সাইন ইন</Link>
+                    <Link href="/sign-up">
+                      <Button className="bg-[#0D8840] shadow-md shadow-[#0D8840]">
+                        সাইন আপ
+                      </Button>
+                    </Link>
+                  </>
+                )}
               </li>
             </ul>
           </div>
         )}
 
-        <div className="border-t border-b border-gray-300">
+        <div className="border-t  border-gray-300">
           <Navbar categories={categories} />
         </div>
       </nav>

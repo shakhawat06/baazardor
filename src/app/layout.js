@@ -3,6 +3,9 @@ import "./globals.css";
 import Header from "@/components/shared/Header";
 import baseUrl from "@/services/baseUrl";
 import Footer from "@/components/shared/Footer";
+import Marque from "@/components/home/Marque";
+import Marquee from "react-fast-marquee";
+import { ToastContainer, toast } from 'react-toastify';
 
 export const notoSerifBangali = Noto_Serif_Bengali({
   subsets: ["latin", "bengali"],
@@ -19,9 +22,16 @@ const getCategories = async () => {
   return data
 }
 
+const getProducts = async () => {
+  const res = await fetch(`${baseUrl}/api/bazardor/products`)
+  const data = await res.json()
+  return data
+}
+
 export default async function RootLayout({ children }) {
   const categories = await getCategories()
-  // console.log(categories);
+  const products = await getProducts()
+  const marqueProducts = products.slice(1, 11);
 
 
   return (
@@ -30,8 +40,12 @@ export default async function RootLayout({ children }) {
       data-theme="light"
       className={`${notoSerifBangali.className} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-gray-100">
-        <Header categories={categories}/>
+      <body className="min-h-full w-full flex flex-col bg-gray-100">
+        <Header categories={categories} />
+        <Marquee>
+          <Marque marqueProducts={marqueProducts} />
+        </Marquee>
+        <ToastContainer />
         {children}
         <Footer />
       </body>

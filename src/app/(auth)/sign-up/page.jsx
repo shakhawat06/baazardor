@@ -1,5 +1,6 @@
 "use client";
 
+import { signIn, signUp } from "@/lib/auth-client";
 import {
   Button,
   FieldError,
@@ -11,9 +12,10 @@ import {
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import { toast } from "react-toastify";
 
 const SignUpPage = () => {
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = {};
@@ -21,7 +23,24 @@ const SignUpPage = () => {
     formData.forEach((value, key) => {
       data[key] = value.toString();
     });
-    alert(`Form submitted with: ${JSON.stringify(data, null, 2)}`);
+    // alert(`Form submitted with: ${JSON.stringify(data, null, 2)}`);
+
+    const { data: signUpData, error } = await signUp.email({
+      name: data.name, // required, The name of the user.
+      email: data.email, // required, The email address of the user.
+      password: data.password, // required, The password of the user. It should be at least 8 characters long and max 128 by default.
+
+      callbackURL: "/",
+    });
+
+    toast.success("অ্যাকাউন্ট তৈরি সফল হয়েছে");
+    // console.log(signUpData, error);
+  };
+
+  const googleSignIn = async () => {
+    const data = await signIn.social({
+      provider: "google",
+    });
   };
 
   return (
@@ -147,7 +166,7 @@ const SignUpPage = () => {
             </div>
 
             <div className="space-x-4">
-              <Button className="rounded-md" variant="outline">
+              <Button onClick={googleSignIn} className="rounded-md" variant="outline">
                 <FcGoogle />
                 Sign in with Google
               </Button>
@@ -159,7 +178,9 @@ const SignUpPage = () => {
             </div>
             <p>
               অ্যাকাউন্ট আছে?
-              <span className="text-[#0D8840]"> সাইন ইন করুন</span>
+              <Link href="/sign-in">
+                <span className="text-[#0D8840]"> সাইন ইন করুন</span>
+              </Link>
             </p>
           </div>
           <Link href="/">

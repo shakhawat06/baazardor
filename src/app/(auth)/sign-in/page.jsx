@@ -1,5 +1,6 @@
 "use client";
 
+import { signIn } from "@/lib/auth-client";
 import {
   Button,
   FieldError,
@@ -13,7 +14,7 @@ import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 
 const SignUpPage = () => {
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = {};
@@ -21,23 +22,44 @@ const SignUpPage = () => {
     formData.forEach((value, key) => {
       data[key] = value.toString();
     });
-    alert(`Form submitted with: ${JSON.stringify(data, null, 2)}`);
+
+    const { data: userData, error } = await signIn.email({
+      email: data.email, // required, The email address of the user.
+      password: data.password, // required, The password of the user. It should be at least 8 characters long and max 128 by default.
+      callbackURL: "/",
+    });
+    toast.success("সাইন ইন সফল হয়েছে");
+  };
+
+  const googleSignIn = async () => {
+    const data = await signIn.social({
+      provider: "google",
+    });
+  };
+
+  const githubSignIn = async () => {
+    const data = await signIn.social({
+      provider: "github",
+    });
   };
 
   return (
-    <div className="max-w-5xl items-center mx-auto">
-      <div className="flex flex-col justify-center items-center py-20 space-y-4">
-        <div className="text-center">
-          <h2 className="text-2xl">সাইন ইন</h2>
-          <p className="text-neutral-500">
+    <div className="max-w-5xl w-full mx-auto px-4 sm:px-6">
+      <div className="flex flex-col justify-center items-center py-10 sm:py-16 md:py-20 space-y-5">
+        {/* Header */}
+        <div className="text-center space-y-2 max-w-xl">
+          <h2 className="text-2xl sm:text-3xl font-bold">সাইন ইন</h2>
+
+          <p className="text-sm sm:text-base text-neutral-500">
             বিস্তারিত দাম, বাজার তুলনা ও প্রোফাইল দেখতে অ্যাকাউন্টে ঢুকুন।
           </p>
         </div>
 
-        <div className="">
-          <div className="flex flex-col gap-10 items-center justify-center rounded-3xl bg-surface p-6">
+        {/* Sign-in Card */}
+        <div className="w-full max-w-md">
+          <div className="flex flex-col gap-6 sm:gap-8 items-center justify-center rounded-2xl sm:rounded-3xl bg-surface p-4 sm:p-6 md:p-8">
             <Form
-              className="flex w-96 flex-col gap-4"
+              className="flex w-full flex-col gap-4"
               render={(props) => <form {...props} data-custom="foo" />}
               onSubmit={onSubmit}
             >
@@ -53,9 +75,10 @@ const SignUpPage = () => {
                 }}
               >
                 <Label>ইমেইল</Label>
-                <Input placeholder="you@example.com" />
+                <Input className="w-full" placeholder="you@example.com" />
                 <FieldError />
               </TextField>
+
               <TextField
                 isRequired
                 minLength={8}
@@ -75,54 +98,74 @@ const SignUpPage = () => {
                 }}
               >
                 <Label>পাসওয়ার্ড</Label>
-                <Input className='border border-neutral-200' placeholder="কমপক্ষে ৮ অক্ষর" />
+                <Input
+                  className="w-full border border-neutral-200"
+                  placeholder="কমপক্ষে ৮ অক্ষর"
+                />
                 <FieldError />
               </TextField>
-              
 
-              <div className="flex gap-2">
-                <Button
-                  fullWidth
-                  className="bg-[#0D8840] rounded-md shadow-md shadow-[#0D8840]"
-                  type="submit"
-                >
-                  সাইন ইন
-                </Button>
-              </div>
+              <Button
+                fullWidth
+                className="w-full bg-[#0D8840] rounded-md shadow-md shadow-[#0D8840]"
+                type="submit"
+              >
+                সাইন ইন
+              </Button>
             </Form>
 
+            {/* Divider */}
             <div className="flex items-center gap-4 w-full">
               <div className="flex-1 border-t-2 border-gray-200" />
-
               <span className="text-sm text-gray-700 whitespace-nowrap">
                 অথবা
               </span>
-
               <div className="flex-1 border-t-2 border-gray-200" />
             </div>
 
-            <div className="space-x-4">
-              <Button className="rounded-md" variant="outline">
+            {/* Social Login */}
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Button
+                onClick={googleSignIn}
+                className="rounded-md w-full flex-1"
+                variant="outline"
+              >
                 <FcGoogle />
-                Sign in with Google
+                Google দিয়ে চালিয়ে যান
               </Button>
 
-              <Button className="rounded-md" variant="outline">
+              <Button
+                onClick={githubSignIn}
+                className="rounded-md w-full flex-1"
+                variant="outline"
+              >
                 <FaGithub />
-                Sign in with GitHub
+                GitHub দিয়ে চালিয়ে যান
               </Button>
             </div>
-            <p>
-              অ্যাকাউন্ট নেই?
-              <span className="text-[#0D8840]"> সাইন আপ করুন</span>
+
+            {/* Sign Up Link */}
+            <p className="text-sm sm:text-base text-center">
+              অ্যাকাউন্ট নেই?{" "}
+              <Link
+                href="/sign-up"
+                className="text-[#0D8840] font-medium hover:underline"
+              >
+                সাইন আপ করুন
+              </Link>
             </p>
           </div>
+
+          {/* Back Home */}
           <Link href="/">
-            <p className="text-center mt-5 text-neutral-500">← হোম পেজে ফিরে যান</p>
+            <p className="text-center mt-5 text-sm sm:text-base text-neutral-500 hover:text-neutral-800">
+              ← হোম পেজে ফিরে যান
+            </p>
           </Link>
         </div>
       </div>
     </div>
+    
   );
 };
 
