@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import { Link, Button } from "@heroui/react";
-import Image from "next/image";
 import Navbar from "./Navbar";
 import { useSession, signOut } from "@/lib/auth-client";
 import { IoIosArrowDown } from "react-icons/io";
@@ -9,7 +8,6 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 const Header = ({ categories }) => {
-  // console.log(categories);
   const router = useRouter();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,7 +20,7 @@ const Header = ({ categories }) => {
     await signOut({
       fetchOptions: {
         onSuccess: () => {
-          router.push("sign-in"); // redirect to login page
+          router.push("/sign-in"); // redirect to login page
         },
       },
     });
@@ -66,15 +64,11 @@ const Header = ({ categories }) => {
             </button>
             <Link href="/">
               <div className="flex items-center gap-3">
-                <Image
-                  className="w-12 h-12 bg-[#0D8840] text-white p-2 rounded-xl"
-                  src="/logo-icon.png"
-                  alt="Logo"
-                  width={25}
-                  height={25}
-                />
+                <div className=" bg-[#0D8840] text-white px-3 py-2 rounded-xl">
+                <span className="text-white text-2xl">🛒</span>
+                </div>
                 <div className="">
-                  <h2 className="font-bold">বাজার দর</h2>
+                  <h2 className="text-2xl font-bold">বাজার দর</h2>
                   <p>{date}</p>
                 </div>
               </div>
