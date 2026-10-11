@@ -1,0 +1,3 @@
+  Inspect         https://vercel.com/developers-ae9c/baazardor/EXE4ar24NMLXpZBZEGisqD5oqKud
+  Production      https://baazardor-3g3391fcf-developers-ae9c.vercel.app
+▲ Aliased         https://baazardor.vercel.app
