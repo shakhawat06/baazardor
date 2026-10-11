@@ -1,5 +1,5 @@
 "use client";
-import { useSession } from "@/lib/auth-client";
+import { updateUser, signOut, useSession } from "@/lib/auth-client";
 import React from "react";
 import {
   Button,
@@ -13,12 +13,15 @@ import {
   TextArea,
   TextField,
 } from "@heroui/react";
-import { signOut } from "better-auth/api";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const ProfilePage = () => {
   const { data: session } = useSession();
+    const router = useRouter();
+  
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = {};
@@ -26,22 +29,26 @@ const ProfilePage = () => {
     formData.forEach((value, key) => {
       data[key] = value.toString();
     });
-    alert("Form submitted successfully!");
+    // alert("Form submitted successfully!");
+
+    await updateUser({
+      name: data.name,
+    });
+    toast.success('নাম পরিবর্তন সফল হয়েছে')
   };
 
   const handleSignOut = async () => {
-      await signOut({
-        fetchOptions: {
-          onSuccess: () => {
-            router.push("sign-in"); // redirect to login page
-          },
+    await signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push("sign-in"); // redirect to login page
         },
-      });
-      toast.success('সাইন আউট সম্পন্ন হয়েছে')
-    };
+      },
+    });
+    toast.success("সাইন আউট সম্পন্ন হয়েছে");
+  };
 
   return (
-    
     <div className="max-w-5xl mx-auto w-full px-4 sm:px-6">
       {/* Profile Heading */}
       <div className="py-6 sm:py-10">
@@ -70,7 +77,7 @@ const ProfilePage = () => {
           </div>
 
           <button
-          onClick={handleSignOut}
+            onClick={handleSignOut}
             type="button"
             className="self-start sm:self-auto cursor-pointer text-rose-600 border border-rose-200 rounded-md px-3 py-2 text-sm hover:bg-rose-600 hover:text-white hover:border-rose-600 transition-colors"
           >
