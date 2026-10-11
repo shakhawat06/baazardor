@@ -12,21 +12,19 @@ const CategoryCard = ({ categoryProducts }) => {
 
   const sortedProducts = [...categoryProducts].sort((a, b) => {
     if (sortOrder === "asc") {
-      return a.today - b.today; // Lowest to highest
+      return a.today - b.today;
     }
 
     if (sortOrder === "desc") {
-      return b.today - a.today; // Highest to lowest
+      return b.today - a.today;
     }
 
-    return 0; // Default order
+    return categoryProducts; 
   });
-  console.log(sortedProducts);
   
 
   return (
     <div>
-      {/* Sort option */}
       <div className="flex flex-wrap items-center justify-between sm:justify-end gap-3 text-neutral-600 bg-white px-4 sm:px-10 py-4 sm:py-6 my-6 sm:my-10 rounded-xl border border-gray-200">
         <span>সাজান</span>
 
@@ -41,12 +39,10 @@ const CategoryCard = ({ categoryProducts }) => {
         </select>
       </div>
 
-      {/* Product count */}
       <div className="text-sm sm:text-base text-neutral-600">
         মোট {categoryProducts.length}টি পণ্য দেখানো হচ্ছে
       </div>
 
-      {/* Product cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-4 gap-4 sm:gap-5">
         {sortedProducts.map((sortedProduct) => (
           <Link
