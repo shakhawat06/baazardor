@@ -20,6 +20,10 @@
 - **[JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)** — Application logic.
 - **[Tailwind CSS](https://tailwindcss.com/)** — Styling and responsive layouts.
 - **REST API / Fetch API** — Retrieving product and price data.
+- **[DaisyUI](https://daisyui.com/docs/install/)** — Tailwindcss ui component.
+- **[HeroUI](https://heroui.com/en/docs/react/getting-started)** — Tailwindcss ui component.
+- **[React Icons](https://react-icons.github.io/react-icons/)** — React Icon component.
+- **[React Toastify](https://github.com/fkhadra/react-toastify#readme)** — React toastify notification component.
 
 > Update this list to match the exact libraries and technologies installed in your project.
 
