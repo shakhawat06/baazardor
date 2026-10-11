@@ -6,6 +6,7 @@ import Navbar from "./Navbar";
 import { useSession, signOut } from "@/lib/auth-client";
 import { IoIosArrowDown } from "react-icons/io";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 const Header = ({ categories }) => {
   // console.log(categories);
@@ -25,6 +26,7 @@ const Header = ({ categories }) => {
         },
       },
     });
+    toast.success('সাইন আউট সম্পন্ন হয়েছে')
   };
 
   return (

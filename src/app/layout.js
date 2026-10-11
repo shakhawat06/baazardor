@@ -5,7 +5,7 @@ import baseUrl from "@/services/baseUrl";
 import Footer from "@/components/shared/Footer";
 import Marque from "@/components/home/Marque";
 import Marquee from "react-fast-marquee";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 
 export const notoSerifBangali = Noto_Serif_Bengali({
   subsets: ["latin", "bengali"],

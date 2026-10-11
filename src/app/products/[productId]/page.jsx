@@ -60,9 +60,9 @@ const ProductDetailsPage = async ({ params }) => {
               <p className="text-sm sm:text-base text-neutral-700">
                 গতকালের তুলনায় আজ দাম
                 {priceCalculation > 0 ? (
-                  <> বেড়েছে · {Math.abs(priceCalculation)} টাকা</>
+                  <> কমেছে  · {Math.abs(priceCalculation)} টাকা</>
                 ) : priceCalculation < 0 ? (
-                  <> কমেছে · {Math.abs(priceCalculation)} টাকা</>
+                  <> বেড়েছে · {Math.abs(priceCalculation)} টাকা</>
                 ) : (
                   <> অপরিবর্তিত</>
                 )}

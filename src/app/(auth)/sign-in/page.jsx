@@ -12,6 +12,7 @@ import {
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import { toast } from "react-toastify";
 
 const SignUpPage = () => {
   const onSubmit = async (e) => {
